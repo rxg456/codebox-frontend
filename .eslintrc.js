@@ -28,6 +28,7 @@ module.exports = {
         "prettier/prettier": "warn",
         "react/display-name": "off",
         "react/react-in-jsx-scope": "off",
+        "import/no-unresolved": "off",
         "sort-imports": [
             "error",
             {
