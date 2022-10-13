@@ -2,7 +2,7 @@ import { Layout, Menu } from "antd";
 import { useRoutes } from "react-router-dom";
 import routes from "virtual:generated-pages-react";
 
-import styles from "./App.module.css";
+import styles from "~/App.module.css";
 
 const { Header, Content, Footer } = Layout;
 
