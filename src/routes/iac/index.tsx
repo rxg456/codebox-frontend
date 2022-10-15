@@ -1,3 +1,3 @@
 export default () => {
-    return <div>Hello world</div>;
+    return <div>ansible 基础设施页面</div>;
 };

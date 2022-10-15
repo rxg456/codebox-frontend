@@ -13,7 +13,7 @@ export default () => {
 
     return (
         <Layout>
-            <Layout.Sider>
+            <Layout.Sider style={{ height: "100%" }}>
                 <Menu
                     mode="inline"
                     items={items}
