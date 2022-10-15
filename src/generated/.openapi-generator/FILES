@@ -8,6 +8,7 @@ models/PaginatedMissionList.ts
 models/PaginatedRepositoryList.ts
 models/Repository.ts
 models/RepositoryCreationRequest.ts
+models/RepositoryMutationRequest.ts
 models/StateEnum.ts
 models/index.ts
 runtime.ts

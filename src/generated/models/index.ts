@@ -6,4 +6,5 @@ export * from './PaginatedMissionList';
 export * from './PaginatedRepositoryList';
 export * from './Repository';
 export * from './RepositoryCreationRequest';
+export * from './RepositoryMutationRequest';
 export * from './StateEnum';

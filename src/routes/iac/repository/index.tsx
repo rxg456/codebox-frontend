@@ -30,6 +30,7 @@ export default () => {
                 return (
                     <Space>
                         <Link to={value.toString()}>查看</Link>
+                        <Link to={`${value}/edit`}>更新</Link>
                     </Space>
                 );
             },
