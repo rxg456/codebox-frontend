@@ -17,22 +17,22 @@ import * as runtime from '../runtime';
 import type {
   PaginatedRepositoryList,
   Repository,
-  RepositoryCreationRequest,
-  RepositoryMutationRequest,
+  RepositoryCreation,
+  RepositoryMutation,
 } from '../models';
 import {
     PaginatedRepositoryListFromJSON,
     PaginatedRepositoryListToJSON,
     RepositoryFromJSON,
     RepositoryToJSON,
-    RepositoryCreationRequestFromJSON,
-    RepositoryCreationRequestToJSON,
-    RepositoryMutationRequestFromJSON,
-    RepositoryMutationRequestToJSON,
+    RepositoryCreationFromJSON,
+    RepositoryCreationToJSON,
+    RepositoryMutationFromJSON,
+    RepositoryMutationToJSON,
 } from '../models';
 
 export interface CreateRepositoryRequest {
-    repositoryCreationRequest: RepositoryCreationRequest;
+    repositoryCreation: RepositoryCreation;
 }
 
 export interface GetRepositoryRequest {
@@ -46,7 +46,7 @@ export interface ListRepositoriesRequest {
 
 export interface UpdateRepositoryRequest {
     id: number;
-    repositoryMutationRequest?: RepositoryMutationRequest;
+    repositoryMutation?: RepositoryMutation;
 }
 
 /**
@@ -57,8 +57,8 @@ export class IacRepositoryApi extends runtime.BaseAPI {
     /**
      */
     async createRepositoryRaw(requestParameters: CreateRepositoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Repository>> {
-        if (requestParameters.repositoryCreationRequest === null || requestParameters.repositoryCreationRequest === undefined) {
-            throw new runtime.RequiredError('repositoryCreationRequest','Required parameter requestParameters.repositoryCreationRequest was null or undefined when calling createRepository.');
+        if (requestParameters.repositoryCreation === null || requestParameters.repositoryCreation === undefined) {
+            throw new runtime.RequiredError('repositoryCreation','Required parameter requestParameters.repositoryCreation was null or undefined when calling createRepository.');
         }
 
         const queryParameters: any = {};
@@ -75,7 +75,7 @@ export class IacRepositoryApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RepositoryCreationRequestToJSON(requestParameters.repositoryCreationRequest),
+            body: RepositoryCreationToJSON(requestParameters.repositoryCreation),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => RepositoryFromJSON(jsonValue));
@@ -175,7 +175,7 @@ export class IacRepositoryApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: RepositoryMutationRequestToJSON(requestParameters.repositoryMutationRequest),
+            body: RepositoryMutationToJSON(requestParameters.repositoryMutation),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => RepositoryFromJSON(jsonValue));

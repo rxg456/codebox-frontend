@@ -3,15 +3,15 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { iacRepositoryApi } from "~/api";
-import { RepositoryCreationRequest } from "~/generated";
+import { RepositoryCreation } from "~/generated";
 import { useAsync } from "~/hooks";
 
 export default () => {
     const create = useAsync(iacRepositoryApi.createRepository.bind(iacRepositoryApi));
-    const [form] = Form.useForm<RepositoryCreationRequest>();
+    const [form] = Form.useForm<RepositoryCreation>();
     const navigate = useNavigate();
-    const submit = (values: RepositoryCreationRequest) => {
-        create.run({ repositoryCreationRequest: values });
+    const submit = (values: RepositoryCreation) => {
+        create.run({ repositoryCreation: values });
     };
 
     useEffect(() => {

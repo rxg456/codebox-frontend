@@ -16,20 +16,20 @@
 import * as runtime from '../runtime';
 import type {
   Mission,
-  MissionCreationRequest,
+  MissionCreation,
   PaginatedMissionList,
 } from '../models';
 import {
     MissionFromJSON,
     MissionToJSON,
-    MissionCreationRequestFromJSON,
-    MissionCreationRequestToJSON,
+    MissionCreationFromJSON,
+    MissionCreationToJSON,
     PaginatedMissionListFromJSON,
     PaginatedMissionListToJSON,
 } from '../models';
 
 export interface CreateMissionRequest {
-    missionCreationRequest: MissionCreationRequest;
+    missionCreation: MissionCreation;
 }
 
 export interface GetMissionRequest {
@@ -38,6 +38,7 @@ export interface GetMissionRequest {
 
 export interface ListMissionsRequest {
     page?: number;
+    repository?: number;
     size?: number;
 }
 
@@ -49,8 +50,8 @@ export class IacMissionApi extends runtime.BaseAPI {
     /**
      */
     async createMissionRaw(requestParameters: CreateMissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Mission>> {
-        if (requestParameters.missionCreationRequest === null || requestParameters.missionCreationRequest === undefined) {
-            throw new runtime.RequiredError('missionCreationRequest','Required parameter requestParameters.missionCreationRequest was null or undefined when calling createMission.');
+        if (requestParameters.missionCreation === null || requestParameters.missionCreation === undefined) {
+            throw new runtime.RequiredError('missionCreation','Required parameter requestParameters.missionCreation was null or undefined when calling createMission.');
         }
 
         const queryParameters: any = {};
@@ -67,7 +68,7 @@ export class IacMissionApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MissionCreationRequestToJSON(requestParameters.missionCreationRequest),
+            body: MissionCreationToJSON(requestParameters.missionCreation),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MissionFromJSON(jsonValue));
@@ -118,6 +119,10 @@ export class IacMissionApi extends runtime.BaseAPI {
 
         if (requestParameters.page !== undefined) {
             queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.repository !== undefined) {
+            queryParameters['repository'] = requestParameters.repository;
         }
 
         if (requestParameters.size !== undefined) {

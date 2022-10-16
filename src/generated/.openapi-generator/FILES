@@ -3,12 +3,12 @@ apis/IacRepositoryApi.ts
 apis/index.ts
 index.ts
 models/Mission.ts
-models/MissionCreationRequest.ts
+models/MissionCreation.ts
 models/PaginatedMissionList.ts
 models/PaginatedRepositoryList.ts
 models/Repository.ts
-models/RepositoryCreationRequest.ts
-models/RepositoryMutationRequest.ts
+models/RepositoryCreation.ts
+models/RepositoryMutation.ts
 models/StateEnum.ts
 models/index.ts
 runtime.ts

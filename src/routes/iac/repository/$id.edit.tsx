@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { iacRepositoryApi } from "~/api";
-import { RepositoryMutationRequest } from "~/generated";
+import { RepositoryMutation } from "~/generated";
 import { useAsync } from "~/hooks";
 import { getNumberParam } from "~/utils";
 
@@ -12,7 +12,7 @@ export default () => {
     const navigate = useNavigate();
     const get = useAsync(iacRepositoryApi.getRepository.bind(iacRepositoryApi));
     const update = useAsync(iacRepositoryApi.updateRepository.bind(iacRepositoryApi));
-    const [form] = Form.useForm<RepositoryMutationRequest>();
+    const [form] = Form.useForm<RepositoryMutation>();
 
     useEffect(() => {
         const id = getNumberParam(params, "id");
@@ -34,9 +34,9 @@ export default () => {
         }
     }, [update.state]);
 
-    const submit = (values: RepositoryMutationRequest) => {
+    const submit = (values: RepositoryMutation) => {
         if (get.data?.id) {
-            update.run({ repositoryMutationRequest: values, id: get.data.id });
+            update.run({ repositoryMutation: values, id: get.data.id });
         }
     };
     return (

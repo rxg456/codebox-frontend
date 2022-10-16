@@ -1,10 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './Mission';
-export * from './MissionCreationRequest';
+export * from './MissionCreation';
 export * from './PaginatedMissionList';
 export * from './PaginatedRepositoryList';
 export * from './Repository';
-export * from './RepositoryCreationRequest';
-export * from './RepositoryMutationRequest';
+export * from './RepositoryCreation';
+export * from './RepositoryMutation';
 export * from './StateEnum';
