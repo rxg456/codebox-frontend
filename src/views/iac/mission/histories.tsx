@@ -1,5 +1,7 @@
 import { Table } from "antd";
 import { ColumnType } from "antd/es/table";
+import { atom, useAtomValue } from "jotai";
+import { useUpdateAtom } from "jotai/utils";
 import { useEffect } from "react";
 
 import { iacMissionApi } from "~/api";
@@ -8,24 +10,36 @@ import { useAsync, usePagination } from "~/hooks";
 import { dateFormat } from "~/utils";
 import { IacMissionState } from "~/views/iac/mission/state";
 
+const timeAtom = atom(Date.now());
 export interface IacMissionHistories {
     repository?: number;
     showRepository?: boolean;
     requiredRepository?: boolean;
 }
 
-export const IacMissionHistories = (props: IacMissionHistories) => {
+const _IacMissionHistories = (props: IacMissionHistories) => {
     const list = useAsync(iacMissionApi.listMissions.bind(iacMissionApi));
     const { page, size, pagination, setPagination } = usePagination();
+    const time = useAtomValue(timeAtom);
+
     useEffect(() => {
         if (props.requiredRepository === true || props.repository) {
             list.run({ page, size, repository: props.repository });
         }
-    }, [props.repository, page, size]);
+    }, [props.repository, page, size, time]);
 
     useEffect(() => {
         if (list.state === "COMPLETED" && list.data) {
             setPagination(list.data);
+            const processing = list.data.results?.filter((it) => it.state === 0 || it.state === 1)?.length;
+            if (processing) {
+                const timer = setTimeout(() => {
+                    if (props.requiredRepository === true || props.repository) {
+                        list.run({ page, size, repository: props.repository });
+                    }
+                }, 2 * 1000);
+                return () => clearTimeout(timer);
+            }
         }
     }, [list.state]);
 
@@ -43,3 +57,14 @@ export const IacMissionHistories = (props: IacMissionHistories) => {
 
     return <Table columns={columns} dataSource={list.data?.results} rowKey="id" pagination={pagination} bordered />;
 };
+
+type IacMissionHistoriesType = typeof _IacMissionHistories & {
+    useIacMissionHistoriesRefresh: () => () => void;
+};
+
+_IacMissionHistories.useIacMissionHistoriesRefresh = () => {
+    const setTime = useUpdateAtom(timeAtom);
+    return () => setTime(Date.now());
+};
+
+export const IacMissionHistories = _IacMissionHistories as IacMissionHistoriesType;

@@ -1,7 +1,7 @@
 import { Input, Modal } from "antd";
 import { atom, useAtom } from "jotai";
 import { useUpdateAtom } from "jotai/utils";
-import { useEffect, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 
 import { iacMissionApi } from "~/api";
 import { Mission } from "~/generated";
@@ -32,6 +32,12 @@ const _IacMissionSubmit = (props: IacMissionSubmitProps) => {
         setVisible(false);
     };
 
+    const handleEnter = (e: KeyboardEvent) => {
+        if (e.code === "Enter") {
+            handleExecute();
+        }
+    };
+
     return (
         <Modal
             visible={visible}
@@ -40,7 +46,7 @@ const _IacMissionSubmit = (props: IacMissionSubmitProps) => {
             onCancel={() => setVisible(false)}
             onOk={handleExecute}
         >
-            <Input value={playbook} onChange={(e) => setPlaybook(e.target.value)} />
+            <Input value={playbook} onChange={(e) => setPlaybook(e.target.value)} onKeyDown={handleEnter} />
         </Modal>
     );
 };
