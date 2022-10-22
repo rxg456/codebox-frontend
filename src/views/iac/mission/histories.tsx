@@ -3,6 +3,7 @@ import { ColumnType } from "antd/es/table";
 import { atom, useAtomValue } from "jotai";
 import { useUpdateAtom } from "jotai/utils";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import { iacMissionApi } from "~/api";
 import { Mission } from "~/generated";
@@ -23,7 +24,7 @@ const _IacMissionHistories = (props: IacMissionHistories) => {
     const time = useAtomValue(timeAtom);
 
     useEffect(() => {
-        if (props.requiredRepository === true || props.repository) {
+        if (props.requiredRepository === false || props.repository) {
             list.run({ page, size, repository: props.repository });
         }
     }, [props.repository, page, size, time]);
@@ -49,10 +50,19 @@ const _IacMissionHistories = (props: IacMissionHistories) => {
         { title: "commit", dataIndex: "commit", key: "commit" },
         { title: "提交时间", dataIndex: "createdAt", key: "createdAt", render: dateFormat },
         { title: "完成时间", dataIndex: "updatedAt", key: "updatedAt", render: dateFormat },
+        { title: "", dataIndex: "id", key: "op", render: (v: number) => <Link to={`/iac/mission/${v}`}>查看</Link> },
     ];
 
     if (props.showRepository) {
-        columns = [{ title: "仓库", dataIndex: ["repository", "name"], key: "repository" }, ...columns];
+        columns = [
+            {
+                title: "仓库",
+                dataIndex: ["repository", "name"],
+                key: "repository",
+                render: (v, record) => <Link to={`/iac/repository/${record.repository.id}`}>{v}</Link>,
+            },
+            ...columns,
+        ];
     }
 
     return <Table columns={columns} dataSource={list.data?.results} rowKey="id" pagination={pagination} bordered />;

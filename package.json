@@ -11,8 +11,9 @@
     "codegen": "openapi-generator-cli generate -g typescript-fetch -i http://127.0.0.1:8000/doc/spec/ -o src/generated/ -c codegen-config.yaml"
   },
   "dependencies": {
+    "ansi_up": "^5.1.0",
     "antd": "^4.23.4",
-    "dayjs": "^1.11.5",
+    "dayjs": "^1.11.6",
     "jotai": "^1.8.5",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
