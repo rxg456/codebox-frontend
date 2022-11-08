@@ -13,7 +13,6 @@ export interface IacMissionSubmitProps {
     repository?: number;
     onSubmitted?: (mission: Mission) => void;
 }
-
 const _IacMissionSubmit = (props: IacMissionSubmitProps) => {
     const exec = useAsync(iacMissionApi.createMission.bind(iacMissionApi));
     const [playbook, setPlaybook] = useState("");

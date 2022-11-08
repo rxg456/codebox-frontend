@@ -1,7 +1,10 @@
+apis/AuthApi.ts
 apis/IacMissionApi.ts
 apis/IacRepositoryApi.ts
 apis/index.ts
 index.ts
+models/Authorization.ts
+models/Login.ts
 models/Mission.ts
 models/MissionCreation.ts
 models/PaginatedMissionList.ts
@@ -10,5 +13,6 @@ models/Repository.ts
 models/RepositoryCreation.ts
 models/RepositoryMutation.ts
 models/StateEnum.ts
+models/User.ts
 models/index.ts
 runtime.ts
