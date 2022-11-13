@@ -1,10 +1,10 @@
-import { Input, Modal } from "antd";
+import { Form, Input, Modal } from "antd";
 import { atom, useAtom } from "jotai";
 import { useUpdateAtom } from "jotai/utils";
-import { KeyboardEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { iacMissionApi } from "~/api";
-import { Mission } from "~/generated";
+import { Mission, MissionCreation } from "~/generated";
 import { useAsync } from "~/hooks";
 
 const visibleAtom = atom<boolean>(false);
@@ -15,8 +15,8 @@ export interface IacMissionSubmitProps {
 }
 const _IacMissionSubmit = (props: IacMissionSubmitProps) => {
     const exec = useAsync(iacMissionApi.createMission.bind(iacMissionApi));
-    const [playbook, setPlaybook] = useState("");
     const [visible, setVisible] = useAtom(visibleAtom);
+    const [form] = Form.useForm<MissionCreation>();
 
     useEffect(() => {
         if (exec.state === "COMPLETED" && exec.data) {
@@ -25,27 +25,32 @@ const _IacMissionSubmit = (props: IacMissionSubmitProps) => {
     }, [exec.state]);
 
     const handleExecute = () => {
-        if (props.repository && playbook) {
-            exec.run({ missionCreation: { repository: props.repository, playbook } });
-        }
-        setVisible(false);
+        form.submit();
     };
 
-    const handleEnter = (e: KeyboardEvent) => {
-        if (e.code === "Enter") {
-            handleExecute();
+    const handleFormSubmit = (value: MissionCreation) => {
+        if (props.repository && value.playbook) {
+            exec.run({ missionCreation: { ...value, repository: props.repository } });
         }
-    };
+        setVisible(false);
+    }
 
     return (
         <Modal
             visible={visible}
-            title={"执行playbook"}
+            title={"提交任务"}
             confirmLoading={exec.loading}
             onCancel={() => setVisible(false)}
             onOk={handleExecute}
         >
-            <Input value={playbook} onChange={(e) => setPlaybook(e.target.value)} onKeyDown={handleEnter} />
+            <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
+                <Form.Item label="playbook" name="playbook" rules={[{ required: true }]} required>
+                    <Input />
+                </Form.Item>
+                <Form.Item label="inventories" name="inventories">
+                    <Input.TextArea autoSize={{ minRows: 6 }}></Input.TextArea>
+                </Form.Item>
+            </Form>
         </Modal>
     );
 };

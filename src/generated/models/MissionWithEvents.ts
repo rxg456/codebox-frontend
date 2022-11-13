@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MissionEvent } from './MissionEvent';
+import {
+    MissionEventFromJSON,
+    MissionEventFromJSONTyped,
+    MissionEventToJSON,
+} from './MissionEvent';
 import type { Repository } from './Repository';
 import {
     RepositoryFromJSON,
@@ -35,86 +41,93 @@ import {
 /**
  * 
  * @export
- * @interface Mission
+ * @interface MissionWithEvents
  */
-export interface Mission {
+export interface MissionWithEvents {
     /**
      * 
      * @type {number}
-     * @memberof Mission
+     * @memberof MissionWithEvents
      */
     readonly id: number;
     /**
      * 
      * @type {Repository}
-     * @memberof Mission
+     * @memberof MissionWithEvents
      */
     readonly repository: Repository;
     /**
      * 
      * @type {User}
-     * @memberof Mission
+     * @memberof MissionWithEvents
      */
     readonly createdBy: User;
     /**
      * 
      * @type {User}
-     * @memberof Mission
+     * @memberof MissionWithEvents
      */
     readonly updatedBy: User;
     /**
      * 
+     * @type {Array<MissionEvent>}
+     * @memberof MissionWithEvents
+     */
+    readonly events: Array<MissionEvent>;
+    /**
+     * 
      * @type {Date}
-     * @memberof Mission
+     * @memberof MissionWithEvents
      */
     readonly createdAt: Date;
     /**
      * 
      * @type {Date}
-     * @memberof Mission
+     * @memberof MissionWithEvents
      */
     readonly updatedAt: Date;
     /**
      * 
      * @type {string}
-     * @memberof Mission
+     * @memberof MissionWithEvents
      */
     playbook: string;
     /**
      * 
      * @type {StateEnum}
-     * @memberof Mission
+     * @memberof MissionWithEvents
      */
     state?: StateEnum;
     /**
      * 
      * @type {string}
-     * @memberof Mission
+     * @memberof MissionWithEvents
      */
     output?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof Mission
+     * @memberof MissionWithEvents
      */
     commit?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof Mission
+     * @memberof MissionWithEvents
      */
     inventories?: string | null;
 }
 
 /**
- * Check if a given object implements the Mission interface.
+ * Check if a given object implements the MissionWithEvents interface.
  */
-export function instanceOfMission(value: object): boolean {
+export function instanceOfMissionWithEvents(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "repository" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "updatedBy" in value;
+    isInstance = isInstance && "events" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
     isInstance = isInstance && "playbook" in value;
@@ -122,11 +135,11 @@ export function instanceOfMission(value: object): boolean {
     return isInstance;
 }
 
-export function MissionFromJSON(json: any): Mission {
-    return MissionFromJSONTyped(json, false);
+export function MissionWithEventsFromJSON(json: any): MissionWithEvents {
+    return MissionWithEventsFromJSONTyped(json, false);
 }
 
-export function MissionFromJSONTyped(json: any, ignoreDiscriminator: boolean): Mission {
+export function MissionWithEventsFromJSONTyped(json: any, ignoreDiscriminator: boolean): MissionWithEvents {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -136,6 +149,7 @@ export function MissionFromJSONTyped(json: any, ignoreDiscriminator: boolean): M
         'repository': RepositoryFromJSON(json['repository']),
         'createdBy': UserFromJSON(json['created_by']),
         'updatedBy': UserFromJSON(json['updated_by']),
+        'events': ((json['events'] as Array<any>).map(MissionEventFromJSON)),
         'createdAt': (new Date(json['created_at'])),
         'updatedAt': (new Date(json['updated_at'])),
         'playbook': json['playbook'],
@@ -146,7 +160,7 @@ export function MissionFromJSONTyped(json: any, ignoreDiscriminator: boolean): M
     };
 }
 
-export function MissionToJSON(value?: Mission | null): any {
+export function MissionWithEventsToJSON(value?: MissionWithEvents | null): any {
     if (value === undefined) {
         return undefined;
     }

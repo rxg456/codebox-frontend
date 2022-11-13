@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { User } from './User';
+import {
+    UserFromJSON,
+    UserFromJSONTyped,
+    UserToJSON,
+} from './User';
+
 /**
  * 
  * @export
@@ -25,6 +32,30 @@ export interface Repository {
      * @memberof Repository
      */
     readonly id: number;
+    /**
+     * 
+     * @type {User}
+     * @memberof Repository
+     */
+    readonly createdBy: User;
+    /**
+     * 
+     * @type {User}
+     * @memberof Repository
+     */
+    readonly updatedBy: User;
+    /**
+     * 
+     * @type {Date}
+     * @memberof Repository
+     */
+    readonly createdAt: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof Repository
+     */
+    readonly updatedAt: Date;
     /**
      * 
      * @type {string}
@@ -51,6 +82,10 @@ export interface Repository {
 export function instanceOfRepository(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "createdBy" in value;
+    isInstance = isInstance && "updatedBy" in value;
+    isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "updatedAt" in value;
     isInstance = isInstance && "name" in value;
 
     return isInstance;
@@ -67,6 +102,10 @@ export function RepositoryFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     return {
         
         'id': json['id'],
+        'createdBy': UserFromJSON(json['created_by']),
+        'updatedBy': UserFromJSON(json['updated_by']),
+        'createdAt': (new Date(json['created_at'])),
+        'updatedAt': (new Date(json['updated_at'])),
         'name': json['name'],
         'remark': !exists(json, 'remark') ? undefined : json['remark'],
         'url': !exists(json, 'url') ? undefined : json['url'],

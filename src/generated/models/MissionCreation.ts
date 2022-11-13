@@ -31,6 +31,12 @@ export interface MissionCreation {
      * @memberof MissionCreation
      */
     playbook: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MissionCreation
+     */
+    inventories?: string | null;
 }
 
 /**
@@ -56,6 +62,7 @@ export function MissionCreationFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'repository': json['repository'],
         'playbook': json['playbook'],
+        'inventories': !exists(json, 'inventories') ? undefined : json['inventories'],
     };
 }
 
@@ -70,6 +77,7 @@ export function MissionCreationToJSON(value?: MissionCreation | null): any {
         
         'repository': value.repository,
         'playbook': value.playbook,
+        'inventories': value.inventories,
     };
 }
 

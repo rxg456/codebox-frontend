@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   Mission,
   MissionCreation,
+  MissionWithEvents,
   PaginatedMissionList,
 } from '../models';
 import {
@@ -24,9 +25,15 @@ import {
     MissionToJSON,
     MissionCreationFromJSON,
     MissionCreationToJSON,
+    MissionWithEventsFromJSON,
+    MissionWithEventsToJSON,
     PaginatedMissionListFromJSON,
     PaginatedMissionListToJSON,
 } from '../models';
+
+export interface CancelMissionRequest {
+    id: number;
+}
 
 export interface CreateMissionRequest {
     missionCreation: MissionCreation;
@@ -46,6 +53,42 @@ export interface ListMissionsRequest {
  * 
  */
 export class IacMissionApi extends runtime.BaseAPI {
+
+    /**
+     */
+    async cancelMissionRaw(requestParameters: CancelMissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Mission>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling cancelMission.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerTokenAuthentication", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/iac/mission/{id}/cancel/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => MissionFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async cancelMission(requestParameters: CancelMissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Mission> {
+        const response = await this.cancelMissionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      */
@@ -88,7 +131,7 @@ export class IacMissionApi extends runtime.BaseAPI {
 
     /**
      */
-    async getMissionRaw(requestParameters: GetMissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Mission>> {
+    async getMissionRaw(requestParameters: GetMissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MissionWithEvents>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getMission.');
         }
@@ -112,12 +155,12 @@ export class IacMissionApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => MissionFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => MissionWithEventsFromJSON(jsonValue));
     }
 
     /**
      */
-    async getMission(requestParameters: GetMissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Mission> {
+    async getMission(requestParameters: GetMissionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MissionWithEvents> {
         const response = await this.getMissionRaw(requestParameters, initOverrides);
         return await response.value();
     }

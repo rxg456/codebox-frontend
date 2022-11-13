@@ -4,6 +4,8 @@ export * from './Authorization';
 export * from './Login';
 export * from './Mission';
 export * from './MissionCreation';
+export * from './MissionEvent';
+export * from './MissionWithEvents';
 export * from './PaginatedMissionList';
 export * from './PaginatedRepositoryList';
 export * from './Repository';

@@ -48,6 +48,7 @@ const _IacMissionHistories = (props: IacMissionHistories) => {
         { title: "playbook", dataIndex: "playbook", key: "playbook" },
         { title: "状态", dataIndex: "state", key: "state", render: (v: number) => <IacMissionState state={v} /> },
         { title: "commit", dataIndex: "commit", key: "commit" },
+        { title: "提交人", dataIndex: ["createdBy", "username"], key: "createdBy" },
         { title: "提交时间", dataIndex: "createdAt", key: "createdAt", render: dateFormat },
         { title: "完成时间", dataIndex: "updatedAt", key: "updatedAt", render: dateFormat },
         { title: "", dataIndex: "id", key: "op", render: (v: number) => <Link to={`/iac/mission/${v}`}>查看</Link> },

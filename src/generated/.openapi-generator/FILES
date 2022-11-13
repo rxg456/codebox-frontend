@@ -7,6 +7,8 @@ models/Authorization.ts
 models/Login.ts
 models/Mission.ts
 models/MissionCreation.ts
+models/MissionEvent.ts
+models/MissionWithEvents.ts
 models/PaginatedMissionList.ts
 models/PaginatedRepositoryList.ts
 models/Repository.ts

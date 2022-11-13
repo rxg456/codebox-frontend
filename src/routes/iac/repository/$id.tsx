@@ -13,7 +13,6 @@ export default () => {
     const navigate = useNavigate();
     const get = useAsync(iacRepositoryApi.getRepository.bind(iacRepositoryApi));
     const [openIacMissionSubmitModal] = IacMissionSubmit.useIacMissionSubmit();
-    const refreshIacMissionHistories = IacMissionHistories.useIacMissionHistoriesRefresh();
 
     useEffect(() => {
         const id = getNumberParam(params, "id");
@@ -35,7 +34,10 @@ export default () => {
 
     return (
         <>
-            <IacMissionSubmit repository={get.data?.id} onSubmitted={refreshIacMissionHistories} />
+            <IacMissionSubmit
+                repository={get.data?.id}
+                onSubmitted={(mission) => navigate(`/iac/mission/${mission.id}`)}
+            />
             <PageHeader title={get.data?.name} ghost={false} extra={extra} onBack={() => navigate("..")} />
             <Card style={{ marginTop: 16 }}>
                 <Descriptions column={2} bordered>
