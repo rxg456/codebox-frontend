@@ -46,6 +46,12 @@ export const IacMissionState = (props: { state: number }) => {
                     TIMEOUT
                 </Tag>
             );
+        case 6:
+            return (
+                <Tag icon={<ExclamationCircleOutlined />} color="warning">
+                    CANCELING
+                </Tag>
+            );
         default:
             return <></>;
     }

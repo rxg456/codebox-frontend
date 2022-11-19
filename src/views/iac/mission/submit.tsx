@@ -33,7 +33,7 @@ const _IacMissionSubmit = (props: IacMissionSubmitProps) => {
             exec.run({ missionCreation: { ...value, repository: props.repository } });
         }
         setVisible(false);
-    }
+    };
 
     return (
         <Modal

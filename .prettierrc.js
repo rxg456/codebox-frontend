@@ -17,5 +17,5 @@ module.exports = {
     bracketSpacing: true,
     parser: "flow",
     // 格式化嵌入的内容
-    embeddedLanguageFormatting: "auto"
-};
+    embeddedLanguageFormatting: "auto",
+}

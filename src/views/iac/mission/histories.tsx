@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { iacMissionApi } from "~/api";
+import { IAC_MISSION_PROCESSING_STATES } from "~/constants";
 import { Mission } from "~/generated";
 import { useAsync, usePagination } from "~/hooks";
 import { dateFormat } from "~/utils";
@@ -32,7 +33,9 @@ const _IacMissionHistories = (props: IacMissionHistories) => {
     useEffect(() => {
         if (list.state === "COMPLETED" && list.data) {
             setPagination(list.data);
-            const processing = list.data.results?.filter((it) => it.state === 0 || it.state === 1)?.length;
+            const processing = list.data.results?.filter((it) =>
+                IAC_MISSION_PROCESSING_STATES.has(it.state ?? 0), 
+            )?.length;
             if (processing) {
                 const timer = setTimeout(() => {
                     if (props.requiredRepository === true || props.repository) {
